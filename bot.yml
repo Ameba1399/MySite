@@ -1,0 +1,30 @@
+name: Run Telegram Bot
+
+on:
+  push:
+    branches: [main]
+    paths: 'bot/**'
+
+jobs:
+  deploy-bot:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+          
+      - name: Install dependencies
+        working-directory: ./bot
+        run: |
+          pip install -r requirements.txt
+          
+      - name: Run Bot
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          ADMIN_ID: ${{ secrets.ADMIN_ID }}
+        working-directory: ./bot
+        run: python main.py
