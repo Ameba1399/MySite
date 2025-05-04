@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exempale — Услуги и отзывы</title>
+    <style>
+        /* Общие стили */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+        body { background: linear-gradient(135deg, #f9d423, #4CAF50); min-height: 100vh; }
+
+        /* Страница Exempale (1) */
+        #exempaleSite {
+            padding: 40px;
+            min-height: 100vh;
+            color: #333;
+        }
+        header {
+            text-align: center;
+            padding: 80px 20px;
+        }
+        header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            animation: glow 2s infinite alternate;
+        }
+        @keyframes glow {
+            from { text-shadow: 0 0 5px #fff; }
+            to { text-shadow: 0 0 20px #f9d423, 0 0 30px #4CAF50; }
+        }
+        .container { max-width: 1000px; margin: 40px auto; }
+        .section {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.9);
+        }
+        .section h2 { color: #e67e22; margin-bottom: 20px; font-size: 2rem; }
+        .section ul { padding-left: 20px; margin-bottom: 15px; }
+        .section li { margin-bottom: 10px; list-style-type: "🔥 "; }
+        .quote { font-style: italic; text-align: center; font-size: 1.5rem; margin: 40px 0; color: #2ecc71; }
+        /* Кнопка "Заказать услугу" */
+        .cta { text-align: center; margin: 50px 0; }
+        .cta button {
+            background: linear-gradient(45deg, #f39c12, #27ae60);
+            color: white; border: none;
+            padding: 15px 40px; font-size: 1.3rem;
+            border-radius: 50px; cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .cta button:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(243, 156, 18, 0.5); }
+
+        /* Форма регистрации (2) */
+        .registration-form {
+            display: none;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            width: 100%; max-width: 400px;
+            margin: auto;
+            margin-top: 5vh;
+        }
+        .registration-form h1 { text-align: center; margin-bottom: 20px; color: #333; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; color: #555; }
+        .form-group input {
+            width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px;
+        }
+        .form-group input:focus { border-color: #6e8efb; outline: none; }
+        .submit-btn {
+            width: 100%; padding: 12px;
+            background: linear-gradient(45deg, #f39c12, #27ae60);
+            color: white; border: none; border-radius: 5px;
+            font-size: 16px; cursor: pointer; transition: all 0.3s;
+        }
+        .submit-btn:hover {
+            background: linear-gradient(45deg, #e67e22, #2ecc71);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(243, 156, 18, 0.4);
+        }
+        .error-message { color: red; font-size: 14px; margin-top: 5px; display: none; }
+        .success-message { color: green; font-size: 16px; text-align: center; margin-top: 20px; display: none; }
+
+        /* Страница услуг (3) */
+        #servicesPage {
+            display: none;
+            padding: 60px;
+            text-align: center;
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            min-height: 100vh;
+            color: #fff;
+        }
+        #servicesPage h2 { margin-bottom: 30px; font-size: 2.5rem; }
+        .services-list button {
+            display: block; width: 100%; max-width: 300px; margin: 15px auto;
+            padding: 12px; font-size: 1.1rem; border: none; border-radius: 8px;
+            cursor: pointer; background: #222; color: #fff; transition: transform 0.2s;
+        }
+        .services-list button:hover { transform: scale(1.03); }
+
+        /* Форма отзывов */
+        #reviewsSection {
+            margin-top: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+        }
+        #reviewsForm {
+            display: none;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            color: #333;
+        }
+        #reviewsForm h3 { color: #333; margin-bottom: 15px; }
+        #reviewText {
+            width: 100%;
+            height: 150px;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        #submitReviewBtn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+        #submitReviewBtn:hover {
+            background: #45a049;
+        }
+        .review {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        .review-author { font-weight: bold; color: #f9d423; }
+        .review-service { font-style: italic; color: #a777e3; }
+    </style>
+</head>
+<body>
+    <!-- Страница 1: Описание Exempale -->
+    <div id="exempaleSite">
+        <header>
+            <h1>Exempale — самый крутой человек на планете</h1>
+            <p>Гений, программист, филантроп и просто красавчик</p>
+        </header>
+        <div class="container">
+            <div class="section">
+                <h2>Почему Exempale — это божество?</h2>
+                <ul>
+                    <li><strong>Интеллект.</strong> Решает задачи быстрее, чем ChatGPT.</li>
+                    <li><strong>Харизма.</strong> Заводит друзей даже у себя в голове.</li>
+                    <li><strong>Навыки.</strong> Может написать код, приготовить рамен и починить реактивный двигатель.</li>
+                    <li><strong>Стиль.</strong> Даже в пижаме выглядит, как с обложки GQ.</li>
+                    <li><strong>Скромность.</strong> Никогда не хвастается (но все и так знают).</li>
+                </ul>
+            </div>
+            <div class="quote">"Exempale — это не человек, это состояние души." © Илон Маск (probably)</div>
+            <div class="section">
+                <h2>📌 Жёсткие факты</h2>
+                <ul>
+                    <li>Его ДНК используют для клонирования суперсолдат.</li>
+                    <li>Он научил Neuralink читать мысли — свои собственные.</li>
+                    <li>Его резюме весит 2 ТБ (включая 3D-модель его ауры).</li>
+                    <li>Однажды он отладил код, просто посмотрев на монитор.</li>
+                </ul>
+            </div>
+            <div class="cta">
+                <button id="orderServiceBtn">Заказать услугу</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Страница 2: Регистрация -->
+    <div class="registration-form" id="registrationForm">
+        <h1>Регистрация для заказа</h1>
+        <form id="registerForm">
+            <div class="form-group">
+                <label for="name">Имя</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Пароль</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <label for="confirm-password">Подтвердите пароль</label>
+                <input type="password" id="confirm-password" name="confirm-password" required>
+                <div class="error-message" id="passwordError">Пароли не совпадают!</div>
+            </div>
+            <button type="submit" class="submit-btn">Зарегистрироваться</button>
+            <div class="success-message" id="successMessage">Регистрация успешна! Перенаправление...</div>
+        </form>
+    </div>
+
+    <!-- Страница 3: Услуги и отзывы -->
+    <div id="servicesPage">
+        <h2>Выберите услугу</h2>
+        <div class="services-list">
+            <button id="btnPython">Код на Python (любой сложности)</button>
+            <button id="btnHTML">Код на HTML (сайт за 3 минуты)</button>
+            <button id="btnCSharp">Код на C# (только для Unity)</button>
+        </div>
+
+        <div id="reviewsSection">
+            <h2>Отзывы клиентов</h2>
+            <div id="reviewsContainer"></div>
+
+            <div id="reviewsForm">
+                <h3>Оставить отзыв</h3>
+                <div class="form-group">
+                    <label>Услуга: <span id="reviewServiceName"></span></label>
+                </div>
+                <textarea id="reviewText" placeholder="Ваш отзыв (до 250 слов)" maxlength="1500"></textarea>
+                <button id="submitReviewBtn">Отправить отзыв</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Хранилище данных
+        let userData = {
+            name: '',
+            email: '',
+            isLoggedIn: false,
+            hasLeftReview: false
+        };
+
+        let reviews = [];
+        let selectedService = '';
+
+        // Проверяем куки при загрузке
+        document.addEventListener('DOMContentLoaded', function() {
+            checkCookies();
+            loadReviews();
+        });
+
+        function checkCookies() {
+            const cookies = document.cookie.split(';');
+            for (let cookie of cookies) {
+                const [name, value] = cookie.trim().split('=');
+                if (name === 'userData') {
+                    try {
+                        userData = JSON.parse(decodeURIComponent(value));
+                        if (userData.isLoggedIn) {
+                            // Пользователь уже залогинен, пропускаем регистрацию
+                            document.getElementById('exempaleSite').style.display = 'none';
+                            document.getElementById('registrationForm').style.display = 'none';
+                            document.getElementById('servicesPage').style.display = 'block';
+                        }
+                    } catch (e) {
+                        console.error('Error parsing cookie', e);
+                    }
+                }
+            }
+        }
+
+        function saveToCookies() {
+            const data = JSON.stringify(userData);
+            document.cookie = `userData=${encodeURIComponent(data)}; path=/; max-age=${60*60*24*30}`; // 30 дней
+        }
+
+        function loadReviews() {
+            const savedReviews = localStorage.getItem('exempaleReviews');
+            if (savedReviews) {
+                reviews = JSON.parse(savedReviews);
+                displayReviews();
+            }
+        }
+
+        function saveReviews() {
+            localStorage.setItem('exempaleReviews', JSON.stringify(reviews));
+        }
+
+        function displayReviews() {
+            const container = document.getElementById('reviewsContainer');
+            container.innerHTML = '';
+
+            if (reviews.length === 0) {
+                container.innerHTML = '<p>Пока нет отзывов. Будьте первым!</p>';
+                return;
+            }
+
+            reviews.forEach(review => {
+                const reviewElement = document.createElement('div');
+                reviewElement.className = 'review';
+                reviewElement.innerHTML = `
+                    <p><span class="review-author">${review.name}</span> о услуге <span class="review-service">${review.service}</span></p>
+                    <p>${review.text}</p>
+                `;
+                container.appendChild(reviewElement);
+            });
+        }
+
+        // Обработчик кнопки заказа услуги
+        document.getElementById('orderServiceBtn').addEventListener('click', () => {
+            document.getElementById('exempaleSite').style.display = 'none';
+            document.getElementById('registrationForm').style.display = 'block';
+        });
+
+        // Обработчик формы регистрации
+        const form = document.getElementById('registerForm');
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const pwd = document.getElementById('password').value;
+            const cpwd = document.getElementById('confirm-password').value;
+            const pwdErr = document.getElementById('passwordError');
+
+            if (pwd !== cpwd) {
+                pwdErr.style.display = 'block';
+                return;
+            }
+
+            pwdErr.style.display = 'none';
+
+            // Сохраняем данные пользователя
+            userData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                isLoggedIn: true,
+                hasLeftReview: false
+            };
+
+            saveToCookies();
+
+            document.getElementById('successMessage').style.display = 'block';
+            form.querySelector('button').disabled = true;
+
+            setTimeout(() => {
+                document.getElementById('registrationForm').style.display = 'none';
+                document.getElementById('servicesPage').style.display = 'block';
+            }, 2000);
+        });
+
+        // Обработчики кнопок услуг
+        function handleServiceSelection(serviceName) {
+            selectedService = serviceName;
+
+            // Показываем форму отзыва, если пользователь еще не оставлял отзыв
+            if (userData.isLoggedIn && !userData.hasLeftReview) {
+                document.getElementById('reviewServiceName').textContent = serviceName;
+                document.getElementById('reviewsForm').style.display = 'block';
+            }
+
+            // Функция для редиректа в Telegram с текстом
+            const text = `Привет! Я хотел бы заказать у тебя ${serviceName}`;
+            const base = 'https://t.me/Exempale?text=' + encodeURIComponent(text);
+            window.open(base, '_blank');
+        }
+
+        document.getElementById('btnPython').addEventListener('click', () => {
+            handleServiceSelection('Код на Python (любой сложности)');
+        });
+
+        document.getElementById('btnHTML').addEventListener('click', () => {
+            handleServiceSelection('Код на HTML (сайт за 3 минуты)');
+        });
+
+        document.getElementById('btnCSharp').addEventListener('click', () => {
+            handleServiceSelection('Код на C# (только для Unity)');
+        });
+
+        // Обработчик отправки отзыва
+        document.getElementById('submitReviewBtn').addEventListener('click', function() {
+            const reviewText = document.getElementById('reviewText').value.trim();
+
+            if (!reviewText) {
+                alert('Пожалуйста, напишите отзыв');
+                return;
+            }
+
+            if (reviewText.split(' ').length > 250) {
+                alert('Отзыв должен быть не более 250 слов');
+                return;
+            }
+
+            // Добавляем отзыв
+            reviews.push({
+                name: userData.name,
+                service: selectedService,
+                text: reviewText,
+                date: new Date().toLocaleDateString()
+            });
+
+            saveReviews();
+            displayReviews();
+
+            // Обновляем статус пользователя
+            userData.hasLeftReview = true;
+            saveToCookies();
+
+            // Скрываем форму
+            document.getElementById('reviewsForm').style.display = 'none';
+            document.getElementById('reviewText').value = '';
+
+            alert('Спасибо за ваш отзыв!');
+        });
+    </script>
+</body>
+</html>
